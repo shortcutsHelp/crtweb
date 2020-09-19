@@ -52,36 +52,24 @@ class HomeController
      * @param ServerRequestInterface $request
      * @param ResponseInterface      $response
      *
-     * @throws HttpBadRequestException
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      * @return ResponseInterface
-     *
      */
     public function index(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        try {
-            $data = $this->twig->render('home/index.html.twig', [
-                'trailers'   => $this->fetchData(),
-                'dateTime'   => date_create()->format(DATE_ATOM),
-                'className'  => __CLASS__,
-                'methodName' => __METHOD__,
-            ]);
-        } catch (\Exception $e) {
-            throw new HttpBadRequestException($request, $e->getMessage(), $e);
-        }
+        $movies = $this->em->getRepository(Movie::class)->findAll();
+
+        $data = $this->twig->render('home/index.html.twig', [
+            'trailers'   => new ArrayCollection($movies),
+            'dateTime'   => date_create()->format(DATE_ATOM),
+            'className'  => __CLASS__,
+            'methodName' => __METHOD__,
+        ]);
 
         $response->getBody()->write($data);
 
         return $response;
-    }
-
-    /**
-     * @return Collection
-     */
-    protected function fetchData(): Collection
-    {
-        $data = $this->em->getRepository(Movie::class)
-            ->findAll();
-
-        return new ArrayCollection($data);
     }
 }
