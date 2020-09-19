@@ -52,15 +52,18 @@ class HomeController
      * @param ServerRequestInterface $request
      * @param ResponseInterface      $response
      *
+     * @throws HttpBadRequestException
      * @return ResponseInterface
      *
-     * @throws HttpBadRequestException
      */
     public function index(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         try {
             $data = $this->twig->render('home/index.html.twig', [
-                'trailers' => $this->fetchData(),
+                'trailers'   => $this->fetchData(),
+                'dateTime'   => date_create()->format(DATE_ATOM),
+                'className'  => __CLASS__,
+                'methodName' => __METHOD__,
             ]);
         } catch (\Exception $e) {
             throw new HttpBadRequestException($request, $e->getMessage(), $e);
