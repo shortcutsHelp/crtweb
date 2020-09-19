@@ -1,6 +1,7 @@
 FROM php:7.4-fpm-alpine
 
 RUN apk add --no-cache \
+    bash \
     autoconf \
     curl \
     dpkg-dev \
@@ -47,6 +48,8 @@ RUN pecl install xdebug && \
     && echo xdebug.remote_host=host.docker.internal >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN wget https://get.symfony.com/cli/installer -O - | bash
+RUN export PATH="$HOME/.symfony/bin:$PATH"
 
 COPY --chown=www-data:www-data . /var/www/app
 WORKDIR /var/www/app
