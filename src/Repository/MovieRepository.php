@@ -48,9 +48,10 @@ class MovieRepository extends EntityRepository
             }
 
             $trailer = $movie
-                ->setTitle((string) $item->getTitle())
-                ->setDescription((string) $item->getDescription())
-                ->setLink((string) $item->getLink())
+                ->setTitle($item->getTitle())
+                ->setDescription($item->getDescription())
+                ->setLink($item->getLink())
+                ->setImage($item->getImage())
                 ->setPubDate($item->getPubDate());
 
             $this->_em->persist($trailer);

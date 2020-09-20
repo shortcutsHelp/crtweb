@@ -14,6 +14,7 @@ class MoviesRSSConverter implements MoviesRSSConverterInterface
 {
     public function convertToRssChannelWithItems(string $xml): RssChannel
     {
+        $xml = str_replace('content:encoded', 'content', $xml);
         $xmlObject = (new \SimpleXMLElement($xml))->children();
 
         if (!property_exists($xmlObject, 'channel')) {
@@ -51,9 +52,14 @@ class MoviesRSSConverter implements MoviesRSSConverterInterface
 
     private function buildItem(\SimpleXMLElement $item): Item
     {
+        $content = $item->content->asXML();
+
+        $content = str_replace('<content><![CDATA[', '', $content);
+        $content = str_replace(']]></content>', '', $content);
+
         return (new Item())
             ->setDescription($item->description)
-            ->setContent($item->content)
+            ->setContent($content)
             ->setLink($item->link)
             ->setPubDate(new DateTime($item->pubDate))
             ->setTitle($item->title);

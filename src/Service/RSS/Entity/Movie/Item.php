@@ -41,6 +41,19 @@ class Item
     }
 
     /**
+     * @return string|null
+     */
+    public function getImage(): ?string
+    {
+        $matches = [];
+
+        if (!preg_match('/src="([a-zA-Z0-9\/:.\-]+)"/', $this->content, $matches, )) {
+            return null;
+        }
+        return $matches[1];
+    }
+
+    /**
      * @param string $title
      *
      * @return Item
