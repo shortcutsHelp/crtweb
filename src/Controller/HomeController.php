@@ -89,7 +89,9 @@ class HomeController
         $movie = $this->em->getRepository(Movie::class)->find((int) $request->getAttribute('id'));
 
         $data = $this->twig->render('home/trailer.html.twig', [
-            'trailer' => $movie,
+            'trailer'  => $movie,
+            'baseUrl'  => $this->config->get('base_url'),
+            'dateTime' => date_create()->format(DATE_ATOM),
         ]);
 
         $response->getBody()->write($data);
