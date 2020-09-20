@@ -40,7 +40,12 @@ class WebProvider implements ServiceProviderInterface
     protected function defineControllerDi(Container $container): void
     {
         $container->set(HomeController::class, static function (ContainerInterface $container) {
-            return new HomeController($container->get(RouteCollectorInterface::class), $container->get(Environment::class), $container->get(EntityManagerInterface::class));
+            return new HomeController(
+                $container->get(RouteCollectorInterface::class),
+                $container->get(Environment::class),
+                $container->get(EntityManagerInterface::class),
+                $container->get(Config::class)
+            );
         });
     }
 
@@ -54,7 +59,8 @@ class WebProvider implements ServiceProviderInterface
         $router->group('/', function (RouteCollectorProxyInterface $router) use ($container) {
             $routes = self::getRoutes($container);
             foreach ($routes as $routeName => $routeConfig) {
-                $router->{$routeConfig['method']}($routeConfig['path'] ?? '', $routeConfig['controller'] . ':' . $routeConfig['action'])
+                $router->{$routeConfig['method']}($routeConfig['path'] ?? '',
+                    $routeConfig['controller'] . ':' . $routeConfig['action'])
                     ->setName($routeName);
             }
         });

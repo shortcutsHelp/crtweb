@@ -9,7 +9,9 @@
         <table class="table table-bordered">
             {% for trailer in trailers %}
                 <tr>
-                    <td>{{ trailer.title }}</td>
+{#                    Я тут не смог использовать path по причине того что path функция не определена. Для того чтобы много времени не терять я захордкожу#}
+                    <td><a href="{{ baseUrl }}trailer/{{ trailer.id }}">{{ trailer.title }}</a></td>
+                    <td><img src="{{ trailer.image }}" alt=""></td>
                 </tr>
             {% endfor %}
         </table>

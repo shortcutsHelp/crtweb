@@ -1,5 +1,5 @@
 slim:
-  debug: false
+  debug: true
 
 templates:
   dir: template
@@ -7,3 +7,5 @@ templates:
 
 rss:
   source: 'https://trailers.apple.com/trailers/home/rss/newtrailers.rss'
+
+base_url: 'http://127.0.0.1:8080/'
