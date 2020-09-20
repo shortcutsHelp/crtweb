@@ -64,8 +64,7 @@ class HomeController
         $data = $this->twig->render('home/index.html.twig', [
             'trailers'   => new ArrayCollection($movies),
             'dateTime'   => date_create()->format(DATE_ATOM),
-            'className'  => __CLASS__,
-            'methodName' => __METHOD__,
+            'action' => __METHOD__,
         ]);
 
         $response->getBody()->write($data);

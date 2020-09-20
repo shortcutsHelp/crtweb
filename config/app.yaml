@@ -4,3 +4,6 @@ slim:
 templates:
   dir: template
   cache: var/cache/template
+
+rss:
+  source: 'https://trailers.apple.com/trailers/home/rss/newtrailers.rss'

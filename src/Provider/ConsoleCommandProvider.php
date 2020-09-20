@@ -6,6 +6,8 @@ namespace App\Provider;
 
 use App\Command\FetchDataCommand;
 use App\Command\RouteListCommand;
+use App\Service\RSS\MoviesRSSConverterInterface;
+use App\Service\RSS\MoviesRSSServiceInterface;
 use App\Support\CommandMap;
 use App\Support\ServiceProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,7 +34,13 @@ class ConsoleCommandProvider implements ServiceProviderInterface
         });
 
         $container->set(FetchDataCommand::class, static function (ContainerInterface $container) {
-            return new FetchDataCommand($container->get(ClientInterface::class), $container->get(LoggerInterface::class), $container->get(EntityManagerInterface::class));
+            return new FetchDataCommand(
+                $container->get(ClientInterface::class),
+                $container->get(LoggerInterface::class),
+                $container->get(EntityManagerInterface::class),
+                $container->get(MoviesRSSServiceInterface::class),
+                $container->get(MoviesRSSConverterInterface::class)
+            );
         });
 
         $container->get(CommandMap::class)->set(RouteListCommand::getDefaultName(), RouteListCommand::class);

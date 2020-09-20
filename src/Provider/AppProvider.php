@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Provider;
 
+use App\Service\RSS\MoviesRSSConverter;
+use App\Service\RSS\MoviesRSSConverterInterface;
+use App\Service\RSS\MoviesRSSService;
+use App\Service\RSS\MoviesRSSServiceInterface;
 use App\Support\{CommandMap, Config, LoggerErrorHandler, NotFoundHandler, ServiceProviderInterface};
 use GuzzleHttp\Client as GuzzleClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
@@ -152,6 +156,14 @@ class AppProvider implements ServiceProviderInterface
 
         $container->set(ClientInterface::class, static function (ContainerInterface $container) {
             return $container->get(GuzzleAdapter::class);
+        });
+
+        $container->set(MoviesRSSServiceInterface::class, static function (ContainerInterface $container) {
+            return new MoviesRSSService($container->get(ClientInterface::class), $container->get(Config::class));
+        });
+
+        $container->set(MoviesRSSConverterInterface::class, static function (ContainerInterface $container) {
+            return new MoviesRSSConverter();
         });
     }
 }
